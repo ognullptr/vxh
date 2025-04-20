@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checking connection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #080A11;
+            font-family: 'Inter', sans-serif;
+            color: #E1E3E8;
+            position: relative;
+			scale: 110%;
+            overflow: hidden;
+        }
+        .card {
+            width: 360px;
+            background: #1B1E2B;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        .card-header {
+            padding: 24px;
+            background: #1F2130;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .card-header svg {
+            width: 32px;
+            height: 32px;
+            fill: #8C80FF;
+            margin-bottom: 12px;
+        }
+        .card-header .title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #B39DFF;
+        }
+        .card-body {
+            padding: 20px;
+            border-top: 1px solid #2C2F3E;
+        }
+        .section {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            color: #E1E3E8;
+        }
+        .section svg {
+            width: 16px;
+            height: 16px;
+            fill: #8C80FF;
+            margin-right: 6px;
+        }
+        .box {
+            margin-top: 8px;
+            padding: 16px;
+            background: #1F2130;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            color: #A0A3B1;
+            text-align: center;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #2C2F3E;
+            margin: 0;
+        }
+        .card-footer {
+            padding: 16px;
+            background: #1F2130;
+            text-align: center;
+            font-size: 13px;
+            color: #A0A3B1;
+        }
+        .card-footer p#footer-note {
+            margin-top: 4px;
+            font-size: 12px;
+            color: #A0A3B1;
+        }
+        .lang {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: #A0A3B1;
+        }
+        .lang svg {
+            width: 16px;
+            height: 16px;
+            fill: #A0A3B1;
+            margin-right: 6px;
+        }
+        #notification {
+            display: none;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #FF4D4F;
+            color: #FFF;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            z-index: 10;
+        }
+        /* Modal */
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center; align-items: center;
+            z-index: 20;
+        }
+        #modal {
+            background: #1B1E2B;
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        #modal .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+        #modal .modal-header svg {
+            width: 24px;
+            height: 24px;
+            fill: #FF4D4F;
+            margin-right: 8px;
+        }
+        #modal .modal-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #E1E3E8;
+        }
+        #modal p {
+            margin-bottom: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        #modal button {
+            margin-top: 12px;
+            padding: 8px 16px;
+            background: #8C80FF;
+            color: #FFF;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+            <div class="title"></div>
+        </div>
+        <div class="card-body">
+            <div class="section">
+                <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                <span class="section-text"></span>
+            </div>
+            <div class="box">::CAPTCHA_BOX::</div>
+        </div>
+        <hr>
+        <div class="card-footer">
+            <strong><p id="footer-note"></p></strong>
+			<br>
+            <span>vexhost.pl</span>
+            <div class="lang" id="lang-switch">
+                <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm5.93 6h-3.26c-.2-1.71-.7-3.29-1.42-4.63A8.03 8.03 0 0117.93 8zM12 4.07c.85 1.28 1.45 2.84 1.64 4.63H10.36c.19-1.79.8-3.35 1.64-4.63zM6.33 6.37c-.72 1.34-1.22 2.92-1.42 4.63H1.65a8.03 8.03 0 014.68-4.63zM4.07 12c0-.67.05-1.32.14-1.96 1.47.12 2.82.13 4.01.13s2.54-.01 4.01-.13c.1.64.14 1.29.14 1.96s-.05 1.32-.14 1.96c-1.47-.12-2.82-.13-4.01-.13s-2.54.01-4.01.13c-.10-.64-.14-1.29-.14-1.96zM6.33 17.63a8.03 8.03 0 01-4.68-4.63h3.26c.2 1.71.7 3.29 1.42 4.63zM12 19.93c-.85-1.28-1.45-2.84-1.64-4.63h3.28c-.19 1.79-.79 3.35-1.64 4.63zM17.93 16c.09.64.14 1.29.14 1.96a8.03 8.03 0 01-4.68 4.63c.72-1.34 1.22-2.92 1.42-4.63h3.12z"/></svg>
+                <span class="lang-text"></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification"></div>
+
+    <div id="modal-overlay">
+        <div id="modal">
+            <div class="modal-header">
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke="#FF4D4F" stroke-width="2" fill="none"/>
+                    <line x1="12" y1="7" x2="12" y2="13" stroke="#FF4D4F" stroke-width="2"/>
+                    <circle cx="12" cy="17" r="1" fill="#FF4D4F"/>
+                </svg>
+                <span class="modal-title"></span>
+            </div>
+            <p class="modal-text"></p>
+            <button id="modal-close"></button>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        const langBrowser = navigator.language || navigator.userLanguage || 'en';
+        let locale = langBrowser.toLowerCase().startsWith('pl') ? 'pl' : 'en';
+        const texts = {
+            en: {
+                title: 'Checking connection',
+                security: 'Security Verification',
+                language: 'English',
+                notify: 'Verification issue?',
+                modalTitle: 'Verification issue?',
+                modal: 'Disable your Proxy or VPN, turn off any extensions that may interfere with the page, etc., which could be blocking Cloudflare.',
+                footerNote: "This shouldn't take longer than 5 seconds.",
+                close: 'Close'
+            },
+            pl: {
+                title: 'Sprawdzanie połączenia',
+                security: 'Weryfikacja bezpieczeństwa',
+                language: 'Polski',
+                notify: 'Problem z weryfikacją?',
+                modalTitle: 'Problem z weryfikacją?',
+                modal: 'Wyłącz Proxy lub VPN, wyłącz rozszerzenia ingerujące w stronę itp., które mogą blokować Cloudflare.',
+                footerNote: 'To nie powinno zająć dłużej niż 5 sekund.',
+                close: 'Zamknij'
+            }
+        };
+
+        const titleEl      = document.querySelector('.title');
+        const secEl        = document.querySelector('.section-text');
+        const langEl       = document.querySelector('.lang-text');
+        const footerNoteEl = document.getElementById('footer-note');
+        const notification = document.getElementById('notification');
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalTitleEl = document.querySelector('.modal-title');
+        const modalText    = document.querySelector('.modal-text');
+        const modalClose   = document.getElementById('modal-close');
+
+        function updateTexts() {
+            titleEl.textContent      = texts[locale].title;
+            secEl.textContent        = texts[locale].security;
+            langEl.textContent       = texts[locale].language;
+            footerNoteEl.textContent = texts[locale].footerNote;
+            modalTitleEl.textContent = texts[locale].modalTitle;
+            modalText.textContent    = texts[locale].modal;
+            modalClose.textContent   = texts[locale].close;
+            document.title           = texts[locale].title + " - vexhost.pl";
+        }
+
+        document.getElementById('lang-switch').addEventListener('click', () => {
+            locale = (locale === 'pl') ? 'en' : 'pl';
+            updateTexts();
+        });
+        modalClose.addEventListener('click', () => {
+            modalOverlay.style.display = 'none';
+        });
+
+        updateTexts();
+
+        setTimeout(() => {
+            modalOverlay.style.display = 'flex';
+        }, 30000);
+    })();
+    </script>
+</body>
+</html>
