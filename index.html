@@ -39,13 +39,13 @@
         .card-header svg {
             width: 32px;
             height: 32px;
-            fill: #8C80FF;
+            fill: #112d34; /* Zmienione */
             margin-bottom: 12px;
         }
         .card-header .title {
             font-size: 18px;
             font-weight: 600;
-            color: #B39DFF;
+            color: #E1E3E8; /* Zmienione */
         }
         .card-body {
             padding: 20px;
@@ -62,7 +62,7 @@
         .section svg {
             width: 16px;
             height: 16px;
-            fill: #8C80FF;
+            fill: #112d34; /* Zmienione */
             margin-right: 6px;
         }
         .box {
@@ -162,7 +162,7 @@
         #modal button {
             margin-top: 12px;
             padding: 8px 16px;
-            background: #8C80FF;
+            background: #112d34; /* Zmienione */
             color: #FFF;
             border: none;
             border-radius: 4px;
@@ -214,67 +214,68 @@
     </div>
 
     <script>
-    (function() {
-        const langBrowser = navigator.language || navigator.userLanguage || 'en';
-        let locale = langBrowser.toLowerCase().startsWith('pl') ? 'pl' : 'en';
-        const texts = {
-            en: {
-                title: 'Checking connection',
-                security: 'Security Verification',
-                language: 'English',
-                notify: 'Verification issue?',
-                modalTitle: 'Verification issue?',
-                modal: 'Disable your Proxy or VPN, turn off any extensions that may interfere with the page, etc., which could be blocking Cloudflare.',
-                footerNote: "This shouldn't take longer than 5 seconds.",
-                close: 'Close'
-            },
-            pl: {
-                title: 'Sprawdzanie połączenia',
-                security: 'Weryfikacja bezpieczeństwa',
-                language: 'Polski',
-                notify: 'Problem z weryfikacją?',
-                modalTitle: 'Problem z weryfikacją?',
-                modal: 'Wyłącz Proxy lub VPN, wyłącz rozszerzenia ingerujące w stronę itp., które mogą blokować Cloudflare.',
-                footerNote: 'To nie powinno zająć dłużej niż 5 sekund.',
-                close: 'Zamknij'
+        (function() {
+            const langBrowser = navigator.language || navigator.userLanguage || 'en';
+            let locale = langBrowser.toLowerCase().startsWith('pl') ? 'pl' : 'en';
+            const texts = {
+                en: {
+                    title: 'Checking connection',
+                    security: 'Security Verification',
+                    language: 'English',
+                    notify: 'Verification issue?',
+                    modalTitle: 'Verification issue?',
+                    modal: 'Disable your Proxy or VPN, turn off any extensions that may interfere with the page, etc., which could be blocking Cloudflare.',
+                    footerNote: "This shouldn't take longer than 5 seconds.",
+                    close: 'Close'
+                },
+                pl: {
+                    title: 'Sprawdzanie połączenia',
+                    security: 'Weryfikacja bezpieczeństwa',
+                    language: 'Polski',
+                    notify: 'Problem z weryfikacją?',
+                    modalTitle: 'Problem z weryfikacją?',
+                    modal: 'Wyłącz Proxy lub VPN, wyłącz rozszerzenia ingerujące w stronę itp., które mogą blokować Cloudflare.',
+                    footerNote: 'To nie powinno zająć dłużej niż 5 sekund.',
+                    close: 'Zamknij'
+                }
+            };
+    
+            const titleEl      = document.querySelector('.title');
+            const secEl        = document.querySelector('.section-text');
+            const langEl       = document.querySelector('.lang-text');
+            const footerNoteEl = document.getElementById('footer-note');
+            const notification = document.getElementById('notification');
+            const modalOverlay = document.getElementById('modal-overlay');
+            const modalTitleEl = document.querySelector('.modal-title');
+            const modalText    = document.querySelector('.modal-text');
+            const modalClose   = document.getElementById('modal-close');
+    
+            function updateTexts() {
+                titleEl.textContent      = texts[locale].title;
+                secEl.textContent        = texts[locale].security;
+                langEl.textContent       = texts[locale].language;
+                footerNoteEl.textContent = texts[locale].footerNote;
+                modalTitleEl.textContent = texts[locale].modalTitle;
+                modalText.textContent    = texts[locale].modal;
+                modalClose.textContent   = texts[locale].close;
+                document.title           = texts[locale].title + " - vexhost.pl";
             }
-        };
-
-        const titleEl      = document.querySelector('.title');
-        const secEl        = document.querySelector('.section-text');
-        const langEl       = document.querySelector('.lang-text');
-        const footerNoteEl = document.getElementById('footer-note');
-        const notification = document.getElementById('notification');
-        const modalOverlay = document.getElementById('modal-overlay');
-        const modalTitleEl = document.querySelector('.modal-title');
-        const modalText    = document.querySelector('.modal-text');
-        const modalClose   = document.getElementById('modal-close');
-
-        function updateTexts() {
-            titleEl.textContent      = texts[locale].title;
-            secEl.textContent        = texts[locale].security;
-            langEl.textContent       = texts[locale].language;
-            footerNoteEl.textContent = texts[locale].footerNote;
-            modalTitleEl.textContent = texts[locale].modalTitle;
-            modalText.textContent    = texts[locale].modal;
-            modalClose.textContent   = texts[locale].close;
-            document.title           = texts[locale].title + " - vexhost.pl";
-        }
-
-        document.getElementById('lang-switch').addEventListener('click', () => {
-            locale = (locale === 'pl') ? 'en' : 'pl';
+    
+            document.getElementById('lang-switch').addEventListener('click', () => {
+                locale = (locale === 'pl') ? 'en' : 'pl';
+                updateTexts();
+            });
+            modalClose.addEventListener('click', () => {
+                modalOverlay.style.display = 'none';
+            });
+    
             updateTexts();
-        });
-        modalClose.addEventListener('click', () => {
-            modalOverlay.style.display = 'none';
-        });
-
-        updateTexts();
-
-        setTimeout(() => {
-            modalOverlay.style.display = 'flex';
-        }, 30000);
-    })();
-    </script>
-</body>
-</html>
+    
+            setTimeout(() => {
+                modalOverlay.style.display = 'flex';
+            }, 30000);
+        })();
+        </script>
+    </body>
+    </html>
+    
